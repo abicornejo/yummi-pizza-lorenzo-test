@@ -1,9 +1,33 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+
+
+import {DialogModule} from 'primeng/dialog';
+import {ButtonModule} from 'primeng/button';
+import {ToastModule} from 'primeng/toast';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {MessagesModule} from 'primeng/messages';
+import {TabViewModule} from 'primeng/tabview';
+import {CodeHighlighterModule} from 'primeng/codehighlighter';
+import {PanelMenuModule} from 'primeng/panelmenu';
+import {MenubarModule} from 'primeng/menubar';
+import {InputTextModule} from 'primeng/inputtext';
+import {SplitButtonModule} from 'primeng/splitbutton';
+import {TableModule} from 'primeng/table';
+import {DataViewModule} from 'primeng/dataview';
+import {ScrollPanelModule } from 'primeng/scrollpanel';
+import {DropdownModule} from 'primeng/dropdown';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {TooltipModule} from 'primeng/tooltip';
+import {PanelModule} from 'primeng/panel';
+
+import {AuthService} from './auth.service';
+import {GlobalServices} from './services/global.service';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,10 +43,13 @@ import { FooterComponent } from './components/footer/footer.component';
     HomeComponent
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule, CommonModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule
+    BrowserModule, AppRoutingModule, HttpClientModule, CommonModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule,
+    ButtonModule, DialogModule, ToastModule, ConfirmDialogModule, MessagesModule, TabViewModule, CodeHighlighterModule,
+      PanelMenuModule, MenubarModule, InputTextModule, SplitButtonModule, TableModule,
+      DataViewModule, ScrollPanelModule, DropdownModule, MultiSelectModule, TooltipModule,
+    PanelModule
   ],
-  providers: [],
+  providers: [AuthService, GlobalServices],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

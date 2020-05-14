@@ -1,3 +1,54 @@
-<div>
-    <h1>WELCOME</h1>
+<div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
+    <div class="ui-g-12" style="text-align:center">
+        <h1>Select your favorite pizza</h1>
+    </div>
+    <div class="ui-g-12 ui-md-12">
+
+        <p-dataView #dvPizzas [value]="pizzas" [paginator]="true" [rows]="15"
+                    [lazy]="true" (onLazyLoad)="listPizza($event)"
+                    [totalRecords]="rowsCounter"
+                    layout="grid"
+        >
+            <p-header>
+                <div class="ui-helper-clearfix">
+                    <div class="ui-g">
+                        <div class="ui-g-6 ui-md-6 filter-container">
+                            <div style="position:relative">
+                                <!--<input type="search" pInputText placeholder="Buscar por folio, nombre, etc." (input)="dvAlumnoGrupo.filterGlobal($event.target.value, 'contains')">-->
+                            </div>
+                        </div>
+                        <div class="ui-g-6 ui-md-6" style="text-align:right">
+                            <div class="ui-g">
+                                <div class="ui-md-6 text-right">
+                                    <!--<button pButton (click)="AssignAlumnoToGroup($event, rowData)" type="button" icon="pi pi-plus" label="Agregar Persona" class="ui-button-rounded ui-button-success"></button>-->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </p-header>
+            <ng-template let-p pTemplate="gridItem">
+
+                <div style="padding:.5em" class="ui-g-12 ui-md-3">
+                    <p-panel  [style]="{'text-align':'center'}">
+                        <p-header>
+                            <div class="ui-helper-clearfix">
+                                 <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">
+                                    {{p.name}}
+                                 </span>
+                                <!--<button [tooltipZIndex]="99999999" appendTo="body"  pButton style="float: right;" type="button" icon="pi pi-times" pTooltip="Desasignar Alumno" (click)="" class="ui-button-rounded ui-button-danger btn-sm" tooltipPosition="top"></button>-->
+                            </div>
+                        </p-header>
+                        <img style="background-color: white" pTooltip="{{p.description}}" src="assets/images/pizza/{{p.image}}" width="120" tooltipPosition="top">
+                        <div class="faena-detail">
+                            <!--<button pButton type="button" icon="pi pi-shopping-cart" (click)=""></button>-->
+                            <button pButton type="button" label="Click" ></button>
+                        </div>
+                    </p-panel>
+                </div>
+
+            </ng-template>
+        </p-dataView>
+    </div>
 </div>
