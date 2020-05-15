@@ -8,7 +8,7 @@ import {MenuItem} from 'primeng/api';
 })
 export class AppComponent implements OnInit {
   title = 'yummipizzalorenzotest';
-  sidebarActive = true;
+  sidebarActive = false;
   items: MenuItem[];
 
   ngOnInit() {

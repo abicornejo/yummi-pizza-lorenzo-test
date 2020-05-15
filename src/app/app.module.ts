@@ -24,7 +24,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {TooltipModule} from 'primeng/tooltip';
 import {PanelModule} from 'primeng/panel';
-
+import {SelectButtonModule} from 'primeng/selectbutton';
 import {AuthService} from './auth.service';
 import {GlobalServices} from './services/global.service';
 
@@ -47,7 +47,7 @@ import { FooterComponent } from './components/footer/footer.component';
     ButtonModule, DialogModule, ToastModule, ConfirmDialogModule, MessagesModule, TabViewModule, CodeHighlighterModule,
       PanelMenuModule, MenubarModule, InputTextModule, SplitButtonModule, TableModule,
       DataViewModule, ScrollPanelModule, DropdownModule, MultiSelectModule, TooltipModule,
-    PanelModule
+    PanelModule, SelectButtonModule
   ],
   providers: [AuthService, GlobalServices],
   bootstrap: [AppComponent]

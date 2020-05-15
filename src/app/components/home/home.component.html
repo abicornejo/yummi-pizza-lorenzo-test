@@ -42,8 +42,8 @@
                         </p-header>
                         <img style="background-color: white" pTooltip="{{p.description}}" src="assets/images/pizza/{{p.image}}" width="120" tooltipPosition="top">
                         <div class="faena-detail">
-                            <!--<button pButton type="button" icon="pi pi-shopping-cart" (click)=""></button>-->
-                            <button pButton type="button" label="Click" ></button>
+                            <!--<button pButton type="button" icon="fa fa-shopping-cart" (click)=""></button>-->
+                            <button class="ui-button-rounded ui-button-danger btn-sm" pButton type="button" label="Order Here" (click)="orderPizza(p)"></button>
                         </div>
                     </p-panel>
                 </div>
@@ -52,3 +52,57 @@
         </p-dataView>
     </div>
 </div>
+
+
+<p-dialog  [contentStyle]="{'overflow':'visible'}"
+           header="{{pizzaSelected?.name}}"
+           [(visible)]="displayOrderDialog"
+           showEffect="fade"
+           [modal]="true"
+           [responsive]="true"
+           [style]="{  width: '900px',  minWidth: '600px', height: '800px'}"
+           [maximizable]="false"
+           [baseZIndex]="10000">
+    <div class="p-grid ui-fluid" *ngIf="pizzaSelected">
+
+            <div class="p-col-3">
+                <img style="background-color: white"  src="assets/images/pizza/{{pizzaSelected.image}}" width="120">
+            </div>
+            <div class="p-col-3">
+                <span *ngIf="sizePizzaSelected">Size Selected: {{sizePizzaSelected?.name}}</span><br>
+                <span *ngIf="sizePizzaSelected">Price: {{sizePizzaSelected?.price}}</span>
+            </div>
+            <div class="p-col-6">
+                <label for="">Ingredients</label><br>
+                <span>{{ingredientByComma}}</span><br>
+                <label for="">Size</label><br>
+                <p-selectButton (onOptionClick)="change($event)" [options]="types" [(ngModel)]="selectedType">
+
+                </p-selectButton>
+
+            </div>
+
+        <!--<div class="p-col-4">-->
+            <!--<div class="">-->
+                <!--<p-selectButton [options]="sexoList" [(ngModel)]="sexoSeleccionado" optionLabel="name">-->
+                    <!--<ng-template let-item>-->
+                        <!--<div style="padding: .5em 1em">-->
+                            <!--<img style="vertical-align: middle; margin-right: .5em" src="assets/images/{{item.value.avatar}}" height="20px"/>-->
+                            <!--<span>{{item.value.name}}</span>-->
+                        <!--</div>-->
+                    <!--</ng-template>-->
+                <!--</p-selectButton>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+
+    </div>
+    <p-footer>
+        <button class="" pButton type="button" label="Add to Car"></button>
+
+        <!--<button type="button" pButton (click)="" label="OK" class="ui-button-success"></button>-->
+        <!--<button type="button" pButton (click)="displayOrderDialog=false" label="Cancel" class="ui-button-secondary"></button>-->
+    <!---->
+    </p-footer>
+</p-dialog>
