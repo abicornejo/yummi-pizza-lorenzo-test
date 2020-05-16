@@ -1,3 +1,5 @@
+<p-confirmDialog  [baseZIndex]="9999" autoZIndex="true" [style]="{width: '50vw'}"></p-confirmDialog>
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
 <div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
     <div class="ui-g-12" style="text-align:center">
         <h1>Select your favorite pizza</h1>
@@ -70,7 +72,8 @@
             </div>
             <div class="p-col-3">
                 <span *ngIf="sizePizzaSelected">Size Selected: {{sizePizzaSelected?.name}}</span><br>
-                <span *ngIf="sizePizzaSelected">Price: {{sizePizzaSelected?.price}}</span>
+                <span *ngIf="sizePizzaSelected">Price: {{dynamicPrice}}</span><br>
+                <p-spinner [min]="1" (onChange)="spinnerChanged($event)" size="30" [(ngModel)]="quantity"></p-spinner>
             </div>
             <div class="p-col-6">
                 <label for="">Ingredients</label><br>
@@ -82,24 +85,9 @@
 
             </div>
 
-        <!--<div class="p-col-4">-->
-            <!--<div class="">-->
-                <!--<p-selectButton [options]="sexoList" [(ngModel)]="sexoSeleccionado" optionLabel="name">-->
-                    <!--<ng-template let-item>-->
-                        <!--<div style="padding: .5em 1em">-->
-                            <!--<img style="vertical-align: middle; margin-right: .5em" src="assets/images/{{item.value.avatar}}" height="20px"/>-->
-                            <!--<span>{{item.value.name}}</span>-->
-                        <!--</div>-->
-                    <!--</ng-template>-->
-                <!--</p-selectButton>-->
-            <!--</div>-->
-        <!--</div>-->
-
-
-
     </div>
     <p-footer>
-        <button class="" pButton type="button" label="Add to Car"></button>
+        <button (click)="addToCar($event)" class="" pButton type="button" label="Order"></button>
 
         <!--<button type="button" pButton (click)="" label="OK" class="ui-button-success"></button>-->
         <!--<button type="button" pButton (click)="displayOrderDialog=false" label="Cancel" class="ui-button-secondary"></button>-->

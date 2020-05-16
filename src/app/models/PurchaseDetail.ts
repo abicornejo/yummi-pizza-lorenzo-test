@@ -1,7 +1,7 @@
-export interface SizePizza {
-    sizePizzaId  ?: number,
+export interface PurchaseDetails {
+    sizePizzaId  ?: string,
     pizzaId  ?: string,
-    sizeId  ?: number,
+    sizeId  ?: string,
     price  ?: number,
     creationDate  ?: Date,
     status  ?: string;

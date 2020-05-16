@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MenuItem} from 'primeng/api';
-
+import {PurchaseDetails} from './models/PurchaseDetails';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,82 +10,30 @@ export class AppComponent implements OnInit {
   title = 'yummipizzalorenzotest';
   sidebarActive = false;
   items: MenuItem[];
+  purchaseDetails: PurchaseDetails[] =[];
 
   ngOnInit() {
+
+    let purchaseDetails = JSON.parse(localStorage.getItem("purchaseDetails") || "[]");
+    if(purchaseDetails && purchaseDetails.length){
+      this.purchaseDetails = purchaseDetails;
+    }
     this.items = [
       {
-        label: 'Secciones',
-        icon: 'pi pi-pw pi-directions',
-        url: 'secciones'
+        label: 'Home',
+        icon: 'pi pi-pw pi-home',
+        url: 'home'
 
       },
       {
-        label: 'Calles',
-        icon: 'pi pi-fw pi-th-large',
-        url: 'calles'
+        label: 'Shopping Cart',
+        icon: 'pi pi-shopping-cart',
+        url: 'cart'
       },
       {
-        label: 'Faenas',
-        icon: 'pi pi-fw pi-globe',
-        url: 'faenas'
-      },
-      {
-        label: 'Personas',
-        icon: 'pi pi-fw pi-users',
-        url: 'personas'
-      },
-      {
-        label: 'AsignarFaenas',
-        icon: 'pi pi-fw pi-users',
-        url: 'faenaspersonas'
-      },
-      {
-        label: 'Catalogos',
-        icon: 'pi pi-fw pi-users',
-        items : [
-          {
-            label: 'Curso',
-            icon: 'pi pi-fw pi-users',
-            url: 'curso'
-          },
-
-          {
-            label: 'Salones',
-            icon: 'pi pi-fw pi-users',
-            url: 'salon'
-          },
-          {
-            label: 'Materias',
-            icon: 'pi pi-fw pi-users',
-            url: 'materia'
-          },
-          {
-            label: 'Grupos',
-            icon: 'pi pi-fw pi-users',
-            url: 'grupo'
-          },
-          {
-            label: 'Horarios',
-            icon: 'pi pi-fw pi-users',
-            url: 'horario'
-          },
-          {
-            label: 'Alumno',
-            icon: 'pi pi-fw pi-user',
-            url: 'alumno'
-          },
-          {
-            label: 'Profesor',
-            icon: 'pi pi-fw pi-user',
-            url: 'profesor'
-          },
-          {
-            label: 'Clases',
-            icon: 'pi pi-fw pi-users',
-            url: 'clase'
-          }
-
-        ]
+        label: 'My Orders',
+        icon: 'pi pi-chart-bar',
+        url: 'orders'
       }
     ];
   }

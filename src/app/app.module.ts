@@ -10,6 +10,7 @@ import {DialogModule} from 'primeng/dialog';
 import {ButtonModule} from 'primeng/button';
 import {ToastModule} from 'primeng/toast';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {MessagesModule} from 'primeng/messages';
 import {TabViewModule} from 'primeng/tabview';
 import {CodeHighlighterModule} from 'primeng/codehighlighter';
@@ -25,6 +26,12 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {TooltipModule} from 'primeng/tooltip';
 import {PanelModule} from 'primeng/panel';
 import {SelectButtonModule} from 'primeng/selectbutton';
+import {SpinnerModule} from 'primeng/spinner';
+import {FullCalendarModule} from 'primeng/fullcalendar';
+import {ChartModule} from 'primeng/chart';
+import {EditorModule} from 'primeng/editor';
+
+
 import {AuthService} from './auth.service';
 import {GlobalServices} from './services/global.service';
 
@@ -36,20 +43,21 @@ import { LoginComponent } from './components/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { CartComponent } from './components/cart/cart.component';
 
 @NgModule({
   declarations: [
     AppComponent, LoginComponent, MenuComponent, TopbarComponent, FooterComponent,
-    HomeComponent
+    HomeComponent, CartComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, CommonModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule,
     ButtonModule, DialogModule, ToastModule, ConfirmDialogModule, MessagesModule, TabViewModule, CodeHighlighterModule,
       PanelMenuModule, MenubarModule, InputTextModule, SplitButtonModule, TableModule,
       DataViewModule, ScrollPanelModule, DropdownModule, MultiSelectModule, TooltipModule,
-    PanelModule, SelectButtonModule
+    PanelModule, SelectButtonModule, SpinnerModule, FullCalendarModule, ChartModule, EditorModule
   ],
-  providers: [AuthService, GlobalServices],
+  providers: [AuthService, GlobalServices, ConfirmationService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

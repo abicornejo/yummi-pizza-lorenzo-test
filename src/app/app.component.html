@@ -5,9 +5,10 @@
   <app-topbar></app-topbar>
 
   <div class="layout-main">
-
+    <p-confirmDialog  [baseZIndex]="9999" autoZIndex="true" [style]="{width: '50vw'}"></p-confirmDialog>
+    <p-toast [style]="{marginTop: '80px'}"></p-toast>
     <div class="layout-content">
-      <!--<p-toast [style]="{marginTop: '80px'}"></p-toast>-->
+
 
       <!--<app-loading-screen></app-loading-screen>-->
       <router-outlet></router-outlet>

@@ -1,29 +1,47 @@
-import { Component } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Pizza} from './../../models/Pizza';
+import {PurchaseDetails} from './../../models/purchaseDetails';
 import {SizePizza} from './../../models/SizePizza';
 import {GlobalServices} from './../../services/global.service';
-import {LazyLoadEvent, SelectItem} from 'primeng';
-
+import {ConfirmationService, LazyLoadEvent, MessageService, SelectItem} from 'primeng/api';
+import { AppComponent } from './../../app.component';
+import {Router} from '@angular/router';
 @Component({
     selector: 'app-home',
-    templateUrl: './home.component.html'
+    templateUrl: './home.component.html',
+    providers: [ConfirmationService, MessageService]
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit{
     pizzas: Pizza[];
     sizePizza: SizePizza[];
     sizePizzaSelected: SizePizza;
-    pizzaSelected : Pizza;
+    pizzaSelected: Pizza;
+    quantity: number = 1;
+    dynamicPrice: number =0;
     dataSource: Pizza[];
     types: SelectItem[] = [];
     ingredients: SelectItem[] = [];
-    selectedType: string;
+    purchaseDetails: PurchaseDetails = {};
+    selectedType: string = 'Small';//SelectItem;
     rowsCounter: 0;
     ingredientByComma: string;
     displayOrderDialog = false;
-    constructor(private  _service: GlobalServices) {
-        // this.types =SelectItem[];
+    constructor(private  _service: GlobalServices, public _app: AppComponent,
+                private _confirmService: ConfirmationService,
+                private _mesgService: MessageService,
+                private _router: Router,
+                private cd: ChangeDetectorRef) {
+    }
+    ngOnInit(){
+        let purchaseDetails = JSON.parse(localStorage.getItem("purchaseDetails") || "[]");
+        if(!this._app.purchaseDetails.length && purchaseDetails && purchaseDetails.length){
+            this._app.purchaseDetails = purchaseDetails.concat();;
+        }
     }
 
+    ngOnDestroy() {
+        //this.eventListener.unsubscribe();
+    }
 
     listPizza(event: LazyLoadEvent) {
         const parameters = {
@@ -50,9 +68,20 @@ export class HomeComponent {
     }
     change(event){
         this.sizePizzaSelected = this.sizePizza.find( item => item.sizePizzaId === event.option.value) ;
-
+        this.quantity = 1;
+        this.dynamicPrice = this.sizePizzaSelected.price * this.quantity;
     }
+
+    spinnerChanged(event){
+        this.dynamicPrice = this.sizePizzaSelected.price * this.quantity;
+    }
+
     orderPizza(pizza: Pizza){
+        // this.sizePizza = [];
+        // this.sizePizzaSelected = {};
+        this.quantity = 1;
+        this.types = [];
+       // this.selectedType = {};
         const parameters = {
             method: 'GET',
             urlMethod: `getSizesByPizzaId/${pizza.pizzaId}`,
@@ -68,6 +97,9 @@ export class HomeComponent {
             });
             // @ts-ignore
             this.sizePizza = records.data;
+            this.sizePizzaSelected = this.sizePizza[0];
+            this.selectedType = this.types[0].value;debugger;
+            this.dynamicPrice = (this.sizePizzaSelected.price) * (this.quantity);
            this.getIngredientsByPizza(pizza);
         }).catch((error: any) => {
 
@@ -84,16 +116,52 @@ export class HomeComponent {
         };
         this._service.callApiRest(parameters).then(records => {
             // @ts-ignore
-            this.ingredients = records.data;
-            // @ts-ignore
-            let tmp = records.data.map(record =>{
-                return record.label;
-            });
-            this.ingredientByComma =tmp.join(',');
-            this.displayOrderDialog = true;
+            if(records && records.data){debugger;
+                // @ts-ignore
+                this.ingredients = records.data;
+                // @ts-ignore
+                let tmp = records.data.map(record =>{
+                    return record.label;
+                });
+                this.ingredientByComma =tmp.join(',');
+                this.displayOrderDialog = true;
+            }
+
         }).catch((error: any) => {
 
         });
     }
 
+    addToCar(event){
+        this.purchaseDetails.pizzaId = this.pizzaSelected.pizzaId;
+        this.purchaseDetails.ingredients = this.ingredientByComma;
+        this.purchaseDetails.pizza = this.pizzaSelected.name;
+        this.purchaseDetails.purchasePrice = this.sizePizzaSelected.price;
+        this.purchaseDetails.amount = this.dynamicPrice;
+        this.purchaseDetails.quantity = this.quantity;
+        this.purchaseDetails.sizeId = this.sizePizzaSelected.sizePizzaId;
+        this.purchaseDetails.sizeDescription = this.sizePizzaSelected.name;
+        this._app.purchaseDetails.push(this.purchaseDetails);
+        this.displayOrderDialog = false;
+
+        localStorage.setItem("purchaseDetails", JSON.stringify(this._app.purchaseDetails));
+
+        this.goToShoppingCart();
+    }
+
+
+    goToShoppingCart() {
+        setTimeout(()=>{
+            this._confirmService.confirm({
+                message: `¿Do you want to go to your shopping cart?`,
+                header: 'Question',
+                accept: () => {
+                    setTimeout(()=> {
+                        this._router.navigate(['cart']);
+                    },1000);
+                }
+            });
+        },1000);
+
+    }
 }

@@ -3,7 +3,7 @@ export interface Pizza {
     name ?: string;
     description ?: string;
     image ?: string;
-    price ?: string;
+    price ?: number;
     stock ?: string;
     minimum_stock ?: string;
     creationDate ?: Date;

@@ -8,7 +8,26 @@
     <span style="font-weight: bold;">
         YUMMI PIZZA
     </span>
+
     <span  style="float: right;font-weight: bold;">
+        <!--<a href="/cart" class="col-md-4 quantity-icon-wrapper">-->
+            <!--<span class="icon icon-padding"></span>-->
+            <!--<span class="quantity-icon quantity-icon-notification" id="cart-counter">1</span>-->
+          <!--</a>-->
+        <!--<button pButton type="button" class="ui-button-raised ui-button-rounded">-->
+             <!--<i class="pi pi-shopping-cart"></i>-->
+            <!--<span class="badge badge-light">4</span>-->
+        <!--</button>-->
+        <!--<button (click)="" type="button" class="btn btn-primary">-->
+          <!--Cart <span class="badge badge-light"></span>-->
+          <!--<span class="sr-only">unread messages</span>-->
+        <!--</button>-->
+        <button (click)="goToCart($event)" type="button" class="btn btn-primary">
+            <!--<i class="pi pi-shopping-cart"></i>-->
+            Cart
+            <span class="badge badge-light">{{app.purchaseDetails && app.purchaseDetails.length ? app.purchaseDetails.length :0}}</span>
+        </button>
         Welcome | username
+        <label for=""></label>
     </span>
 </div>

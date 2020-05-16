@@ -1,0 +1,81 @@
+<div class="p-grid p-align-start vertical-container" style="margin-top: 0.5em !important;">
+    <div class="p-col-12">
+        <p-table   #dtCart  [value]="_app.purchaseDetails" lazy="true" [responsive]="true"
+                  [paginator]="false" [totalRecords]="_app.purchaseDetails.length"
+                   dataKey="id"
+        >
+            <ng-template pTemplate="caption">
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <h1>Cart List</h1>
+                    </div>
+                    <!--<div class="p-col-4">-->
+                        <!--<div class="ui-inputgroup">-->
+
+                            <!--<input placeholder="Busqueda global" id="txtSearch" type="text" pInputText size="50"  (input)="dtCart.filterGlobal($event.target.value, 'contains')" style="width:auto">-->
+
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="p-col-6">-->
+                        <!--<button pButton (click)="showDialogToAdd()" type="button" icon="pi pi-plus" label="Nuevo" class="ui-button-rounded ui-button-success"></button>-->
+                        <!--<button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Exportar a Excel" class="ui-button-rounded ui-button-success" (click)="dtCart.exportCSV()"></button>-->
+                    <!--</div>-->
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width:30%">Pizza</th>
+                    <th style="width:20%">Size</th>
+                    <th style="width:20%">Price</th>
+                    <th style="width:25%">Quantity</th>
+                    <th style="width:25%">Amount</th>
+                    <th style="width:30%">Ingredients</th>
+
+                    <th style="width:25%">Options</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-registro="rowData"  let-columns="columns" let-rowIndex="rowIndex">
+                <tr>
+                    <td>
+                        {{rowData.pizza}}
+                    </td>
+                    <td>
+                        {{rowData.sizeDescription}}
+                    </td>
+                    <td>
+                        {{rowData.purchasePrice}}
+                    </td>
+                    <td>
+                        {{rowData.quantity}}
+                    </td>
+                    <td>
+                        {{rowData.amount}}
+                    </td>
+                    <td>
+                        {{rowData.ingredients}}
+                    </td>
+
+
+                    <td>
+                        <p-button icon="pi pi-pencil" pTooltip="Edit"  class="ui-button-rounded ui-button-warning ui-button-danger btn-sm" tooltipPosition="top"></p-button>
+                        <p-button icon="pi pi-trash" pTooltip="Remove"  class="ui-button-rounded ui-button-danger btn-sm" tooltipPosition="top"></p-button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="p-grid">
+                    <div class="p-col-4">
+                        Showing {{_app.purchaseDetails.length}} rows
+                    </div>
+                    <div class="p-col-4">
+                        Total: {{totalAmount}}
+                    </div>
+                    <div class="p-col-4">
+                        <button (click)="purchase($event)" pButton type="button" label="Purchase" class="ui-button-rounded ui-button-success"></button>
+                    </div>
+                </div>
+
+            </ng-template>
+        </p-table>
+    </div>
+</div>
