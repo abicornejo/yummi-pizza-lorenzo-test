@@ -1,3 +1,7 @@
+You can test the prpyect in this URL
+http://pizza.itcodesolutions.com/
+
+
 # YummiPizzaLorenzoTest
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.1.
