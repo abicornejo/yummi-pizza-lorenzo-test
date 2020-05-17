@@ -5,7 +5,7 @@ import { map,  catchError, tap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
-    public urlService = 'http://127.0.0.1:8000/api/auth';
+    public urlService = 'http://pizzaservice.itcodesolutions.com/api/auth';
     constructor(private httpClient: HttpClient) {
 
     }
