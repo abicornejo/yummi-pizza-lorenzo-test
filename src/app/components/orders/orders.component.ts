@@ -22,7 +22,7 @@ export class OrdersComponent implements OnInit{
             }
         }
     }
-
+    expanded : false;
     orders : Purchase[]=[];
     dataSource : Purchase[];
     orderSelected : Purchase = {};

@@ -13,7 +13,7 @@
                 </div>
                 <div class="div">
                     <h5>Email</h5>
-                    <input type="email" value="abicornejo2@gmail.com" formControlName="email"  [ngClass]="{ 'is-invalid': submitted && f.email.errors }" (blur)="remCl($event.target)" (focus)="addCl($event.target)">
+                    <input type="email" formControlName="email"  [ngClass]="{ 'is-invalid': submitted && f.email.errors }" (blur)="remCl($event.target)" (focus)="addCl($event.target)">
                     <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                         <div *ngIf="f.email.errors.required">Email is required</div>
                     </div>
@@ -26,7 +26,7 @@
                 </div>
                 <div class="div">
                     <h5>Password</h5>
-                    <input type="password" value="12345678" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }"  (blur)="remCl($event.target)" (focus)="addCl($event.target)">
+                    <input type="password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }"  (blur)="remCl($event.target)" (focus)="addCl($event.target)">
                     <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                         <div *ngIf="f.password.errors.required">Password is required</div>
                     </div>
