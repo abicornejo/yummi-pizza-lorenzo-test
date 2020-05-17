@@ -1,33 +1,38 @@
 <div class="layout-topbar">
+
     <a href="#" class="menu-btn" (click)="app.onMenuButtonClick($event)">
         <i class="pi pi-bars"></i>
     </a>
-
-    <!--<img class="logo" src="assets/images/primeng-example-logo.png"/>-->
-    <!---->
     <span style="font-weight: bold;">
         YUMMI PIZZA
     </span>
 
     <span  style="float: right;font-weight: bold;">
-        <!--<a href="/cart" class="col-md-4 quantity-icon-wrapper">-->
-            <!--<span class="icon icon-padding"></span>-->
-            <!--<span class="quantity-icon quantity-icon-notification" id="cart-counter">1</span>-->
-          <!--</a>-->
-        <!--<button pButton type="button" class="ui-button-raised ui-button-rounded">-->
-             <!--<i class="pi pi-shopping-cart"></i>-->
-            <!--<span class="badge badge-light">4</span>-->
-        <!--</button>-->
-        <!--<button (click)="" type="button" class="btn btn-primary">-->
-          <!--Cart <span class="badge badge-light"></span>-->
-          <!--<span class="sr-only">unread messages</span>-->
-        <!--</button>-->
         <button (click)="goToCart($event)" type="button" class="btn btn-primary">
-            <!--<i class="pi pi-shopping-cart"></i>-->
             Cart
             <span class="badge badge-light">{{app.purchaseDetails && app.purchaseDetails.length ? app.purchaseDetails.length :0}}</span>
         </button>
-        Welcome | username
-        <label for=""></label>
+        |
+        Welcome: {{app.currentUser.name}}
+        |
+        <p-button (click)="app.logout()" pTooltip="Logout" class="ui-button-danger" icon="pi pi-sign-out"></p-button>
     </span>
+
+
+    <!--<p-toolbar>-->
+        <!--<div class="ui-toolbar-group-left">-->
+            <!--<button pButton type="button" label="New" icon="pi pi-plus"></button>-->
+            <!--<button pButton type="button" label="Upload" icon="pi pi-upload" class="ui-button-success"></button>-->
+
+            <!--<i class="pi pi-bars"></i>-->
+
+            <!--<p-splitButton label="Save" icon="pi pi-check" [model]="items" styleClass="ui-button-warning"></p-splitButton>-->
+        <!--</div>-->
+
+        <!--<div class="ui-toolbar-group-right">-->
+            <!--<button pButton type="button" icon="pi pi-search"></button>-->
+            <!--<button pButton type="button" icon="pi pi-calendar" class="ui-button-success"></button>-->
+            <!--<button pButton type="button" icon="pi pi-times" class="ui-button-danger"></button>-->
+        <!--</div>-->
+    <!--</p-toolbar>-->
 </div>

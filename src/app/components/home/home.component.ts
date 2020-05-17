@@ -18,11 +18,12 @@ export class HomeComponent implements OnInit{
     pizzaSelected: Pizza;
     quantity: number = 1;
     dynamicPrice: number =0;
+    dynamicPriceEuro: number =0;
     dataSource: Pizza[];
     types: SelectItem[] = [];
     ingredients: SelectItem[] = [];
     purchaseDetails: PurchaseDetails = {};
-    selectedType: string = 'Small';//SelectItem;
+    selectedType: string = '';//SelectItem;
     rowsCounter: 0;
     ingredientByComma: string;
     displayOrderDialog = false;
@@ -33,10 +34,13 @@ export class HomeComponent implements OnInit{
                 private cd: ChangeDetectorRef) {
     }
     ngOnInit(){
-        let purchaseDetails = JSON.parse(localStorage.getItem("purchaseDetails") || "[]");
-        if(!this._app.purchaseDetails.length && purchaseDetails && purchaseDetails.length){
-            this._app.purchaseDetails = purchaseDetails.concat();;
+        if(!this._app.purchaseDetails.length){
+            let purchaseDetails = JSON.parse(localStorage.getItem("purchaseDetails") || "[]");
+            if(purchaseDetails && purchaseDetails.length){
+                this._app.purchaseDetails = purchaseDetails.concat();;
+            }
         }
+
     }
 
     ngOnDestroy() {
@@ -70,15 +74,18 @@ export class HomeComponent implements OnInit{
         this.sizePizzaSelected = this.sizePizza.find( item => item.sizePizzaId === event.option.value) ;
         this.quantity = 1;
         this.dynamicPrice = this.sizePizzaSelected.price * this.quantity;
+        this.dynamicPriceEuro = this.sizePizzaSelected.euroPrice * this.quantity;
     }
 
     spinnerChanged(event){
         this.dynamicPrice = this.sizePizzaSelected.price * this.quantity;
+        this.dynamicPriceEuro = this.sizePizzaSelected.euroPrice * this.quantity;
     }
 
     orderPizza(pizza: Pizza){
         // this.sizePizza = [];
         // this.sizePizzaSelected = {};
+        this.purchaseDetails = {};
         this.quantity = 1;
         this.types = [];
        // this.selectedType = {};
@@ -93,13 +100,14 @@ export class HomeComponent implements OnInit{
         this._service.callApiRest(parameters).then(records => {
             // @ts-ignore
             records.data.map(record =>{
-                self.types.push({ label: record.name , value: record.sizePizzaId});
+                self.types.push({ label: `${record.name}`  , value: record.sizePizzaId});
             });
             // @ts-ignore
             this.sizePizza = records.data;
             this.sizePizzaSelected = this.sizePizza[0];
-            this.selectedType = this.types[0].value;debugger;
+            this.selectedType = this.types[0].value;
             this.dynamicPrice = (this.sizePizzaSelected.price) * (this.quantity);
+            this.dynamicPriceEuro = (this.sizePizzaSelected.euroPrice) * (this.quantity);
            this.getIngredientsByPizza(pizza);
         }).catch((error: any) => {
 
@@ -116,7 +124,7 @@ export class HomeComponent implements OnInit{
         };
         this._service.callApiRest(parameters).then(records => {
             // @ts-ignore
-            if(records && records.data){debugger;
+            if(records && records.data){
                 // @ts-ignore
                 this.ingredients = records.data;
                 // @ts-ignore
@@ -138,8 +146,9 @@ export class HomeComponent implements OnInit{
         this.purchaseDetails.pizza = this.pizzaSelected.name;
         this.purchaseDetails.purchasePrice = this.sizePizzaSelected.price;
         this.purchaseDetails.amount = this.dynamicPrice;
+        this.purchaseDetails.amountEuro = this.dynamicPriceEuro;
         this.purchaseDetails.quantity = this.quantity;
-        this.purchaseDetails.sizeId = this.sizePizzaSelected.sizePizzaId;
+        this.purchaseDetails.sizePizzaId = this.sizePizzaSelected.sizePizzaId;
         this.purchaseDetails.sizeDescription = this.sizePizzaSelected.name;
         this._app.purchaseDetails.push(this.purchaseDetails);
         this.displayOrderDialog = false;

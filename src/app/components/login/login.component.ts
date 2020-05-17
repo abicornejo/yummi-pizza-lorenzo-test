@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
 
-// @ts-ignore
-import Any = jasmine.Any;
-
-
+import { AlertService, AuthenticationService } from './../../services';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -11,28 +11,68 @@ import Any = jasmine.Any;
 })
 export class LoginComponent implements OnInit {
 
-    public inputs: any = null;
+    loginForm: FormGroup;
+    loading = false;
+    submitted = false;
+    returnUrl: string;
 
     constructor(
+        private formBuilder: FormBuilder,
+        private route: ActivatedRoute,
+        private router: Router,
+        private authenticationService: AuthenticationService,
+        private alertService: AlertService
     ) {
-
+        // redirect to home if already logged in
+        if (this.authenticationService.currentUserValue) {
+            this.router.navigate(['/']);
+        }
     }
 
     ngOnInit() {
-        // this.inputs = document.querySelectorAll('.input');
-        // this.inputs.forEach(input => {
-        //     input.addEventListener('focus', this.addCl($event));
-        //     input.addEventListener('blur', this.remCl($event));
-        // });
+        this.loginForm = this.formBuilder.group({
+            email: ['abicornejo2@gmail.com', Validators.required],
+            password: ['12345678', Validators.required]
+        });
+
+        // get return url from route parameters or default to '/'
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
-    addCl(event) {debugger;
+    // convenience getter for easy access to form fields
+    get f() { return this.loginForm.controls; }
+
+    onSubmit() {
+        this.submitted = true;
+
+        // reset alerts on submit
+        this.alertService.clear();
+
+        // stop here if form is invalid
+        if (this.loginForm.invalid) {
+            return;
+        }
+
+        this.loading = true;
+        this.authenticationService.login(this.f.email.value, this.f.password.value)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.router.navigate([this.returnUrl]);
+                },
+                error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                });
+    }
+
+    addCl(event) {
         // @ts-ignore
         const parent = event.parentNode.parentNode;
         parent.classList.add('focus');
     }
 
-    remCl(event) {debugger;
+    remCl(event) {
         // @ts-ignore
         const parent = event.parentNode.parentNode;
         // @ts-ignore

@@ -1,19 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit} from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-
 import {AuthService} from './../auth.service';
-
-
-
 @Injectable({
     providedIn: 'root'
 })
-export class GlobalServices{
+export class GlobalServices implements OnInit {
 
-    PHP_API_SERVER = 'http://restservices.itcodesolutions.com';
-    public products  = [];
+    public urlService : string;
     constructor(private httpClient: HttpClient, private authService: AuthService) {
-
+        this.urlService = this.authService.getUrlService();
+    }
+    ngOnInit(){
+        this.urlService = this.authService.getUrlService();
     }
 
     callApiRest( parameters: any ) {
@@ -27,22 +25,22 @@ export class GlobalServices{
         const httpOptions = new HttpHeaders(header);
 
         if (parameters.method === 'GET') {
-            return this.httpClient.get<any>(`${this.PHP_API_SERVER}/api/v1/auth/${parameters.urlMethod}`, {headers: httpOptions, params : parameters.params})
+            return this.httpClient.get<any>(`${this.urlService}/${parameters.urlMethod}`, {headers: httpOptions, params : parameters.params})
                 .toPromise()
                 .then(res => <any[]>res);
         } else if(parameters.method === 'POST'){
             const body = JSON.stringify(parameters.params);
-            return this.httpClient.post(`${this.PHP_API_SERVER}/api/v1/auth/${parameters.urlMethod}?token=${token}`, body, {headers: httpOptions})
+            return this.httpClient.post(`${this.urlService}/${parameters.urlMethod}?token=${token}`, body, {headers: httpOptions})
                 .toPromise()
                 .then(res => <any[]>res);
         }
         else if(parameters.method === 'PUT'){
             const body = JSON.stringify(parameters.params);
-            return this.httpClient.put(`${this.PHP_API_SERVER}/api/v1/auth/${parameters.urlMethod}?token=${token}`, body, {headers: httpOptions})
+            return this.httpClient.put(`${this.urlService}/${parameters.urlMethod}?token=${token}`, body, {headers: httpOptions})
                 .toPromise()
                 .then(res => <any[]>res);
         }else if(parameters.method === 'DELETE'){
-            return this.httpClient.delete(`${this.PHP_API_SERVER}/api/v1/auth/${parameters.urlMethod}`).toPromise().then(res => <any[]>res);
+            return this.httpClient.delete(`${this.urlService}/${parameters.urlMethod}`).toPromise().then(res => <any[]>res);
         }
 
     }

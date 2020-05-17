@@ -5,7 +5,7 @@ import { map,  catchError, tap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
-    PHP_API_SERVER = 'http://restservices.itcodesolutions.com';
+    public urlService = 'http://127.0.0.1:8000/api/auth';
     constructor(private httpClient: HttpClient) {
 
     }
@@ -55,5 +55,9 @@ export class AuthService {
     //
     getToken() {
         return localStorage.getItem('token');
+    }
+
+    getUrlService() {
+        return this.urlService;
     }
 }

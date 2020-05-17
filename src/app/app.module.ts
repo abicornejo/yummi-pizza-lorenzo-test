@@ -6,6 +6,11 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 
+// used to create fake backend
+import { fakeBackendProvider } from './components/_helpers';
+import { JwtInterceptor, ErrorInterceptor } from './components/_helpers';
+
+
 import {DialogModule} from 'primeng/dialog';
 import {ButtonModule} from 'primeng/button';
 import {ToastModule} from 'primeng/toast';
@@ -30,6 +35,8 @@ import {SpinnerModule} from 'primeng/spinner';
 import {FullCalendarModule} from 'primeng/fullcalendar';
 import {ChartModule} from 'primeng/chart';
 import {EditorModule} from 'primeng/editor';
+import {ToolbarModule} from 'primeng/toolbar';
+import {PasswordModule} from 'primeng/password';
 
 
 import {AuthService} from './auth.service';
@@ -44,20 +51,31 @@ import { MenuComponent } from './components/menu/menu.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { CartComponent } from './components/cart/cart.component';
+import { RegisterComponent } from './components/register';
+import { AlertComponent } from './components/_components';
+import { OrdersComponent } from './components/orders/orders.component';
 
 @NgModule({
   declarations: [
     AppComponent, LoginComponent, MenuComponent, TopbarComponent, FooterComponent,
-    HomeComponent, CartComponent
+    HomeComponent, CartComponent, RegisterComponent, AlertComponent, OrdersComponent
+
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, CommonModule, BrowserAnimationsModule, FormsModule, ReactiveFormsModule,
     ButtonModule, DialogModule, ToastModule, ConfirmDialogModule, MessagesModule, TabViewModule, CodeHighlighterModule,
       PanelMenuModule, MenubarModule, InputTextModule, SplitButtonModule, TableModule,
       DataViewModule, ScrollPanelModule, DropdownModule, MultiSelectModule, TooltipModule,
-    PanelModule, SelectButtonModule, SpinnerModule, FullCalendarModule, ChartModule, EditorModule
+    PanelModule, SelectButtonModule, SpinnerModule, FullCalendarModule, ChartModule, EditorModule,
+    PasswordModule, ToolbarModule
   ],
-  providers: [AuthService, GlobalServices, ConfirmationService, MessageService],
+  providers: [AuthService, GlobalServices, ConfirmationService, MessageService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+
+    // provider used to create fake backend
+    fakeBackendProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

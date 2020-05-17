@@ -1,20 +1,20 @@
 <div class="layout-wrapper" [ngClass]="{'layout-sidebar-active': sidebarActive}">
 
-  <app-menu></app-menu>
+  <app-menu *ngIf="currentUser"></app-menu>
 
-  <app-topbar></app-topbar>
+  <app-topbar *ngIf="currentUser"></app-topbar>
 
   <div class="layout-main">
     <p-confirmDialog  [baseZIndex]="9999" autoZIndex="true" [style]="{width: '50vw'}"></p-confirmDialog>
     <p-toast [style]="{marginTop: '80px'}"></p-toast>
     <div class="layout-content">
-
+      <!--<alert></alert>-->
 
       <!--<app-loading-screen></app-loading-screen>-->
       <router-outlet></router-outlet>
     </div>
 
-    <app-footer></app-footer>
+    <app-footer *ngIf="currentUser"></app-footer>
 
     <div class="layout-main-mask"></div>
   </div>

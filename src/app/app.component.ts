@@ -1,23 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import {PurchaseDetails} from './models/PurchaseDetails';
+//import {AuthenticationService} from './components/login/shared/authentication.service';
+import {AuthenticationService} from './services/authentication.service';
+import { User } from './models/User';
+import {Router} from '@angular/router';
+import './components/_content/app.less';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [ AuthenticationService ]
 })
 export class AppComponent implements OnInit {
+  currentUser: User;
   title = 'yummipizzalorenzotest';
   sidebarActive = false;
   items: MenuItem[];
   purchaseDetails: PurchaseDetails[] =[];
 
+  constructor(
+      private router: Router,
+      private authenticationService: AuthenticationService
+  ) {
+    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+  }
+
+  logout() {
+    this.authenticationService.logout();
+    this.router.navigate(['/login']);
+  }
+
   ngOnInit() {
 
-    let purchaseDetails = JSON.parse(localStorage.getItem("purchaseDetails") || "[]");
-    if(purchaseDetails && purchaseDetails.length){
-      this.purchaseDetails = purchaseDetails;
+    if(!this.purchaseDetails.length){
+      let purchaseDetails = JSON.parse(localStorage.getItem("purchaseDetails") || "[]");
+      if(purchaseDetails && purchaseDetails.length){
+        this.purchaseDetails = purchaseDetails;
+      }
     }
+
     this.items = [
       {
         label: 'Home',
@@ -26,14 +48,14 @@ export class AppComponent implements OnInit {
 
       },
       {
-        label: 'Shopping Cart',
+        label: 'Shopping cart',
         icon: 'pi pi-shopping-cart',
         url: 'cart'
       },
       {
         label: 'My Orders',
         icon: 'pi pi-chart-bar',
-        url: 'orders'
+        url: 'order'
       }
     ];
   }

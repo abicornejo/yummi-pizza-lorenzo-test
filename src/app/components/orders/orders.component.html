@@ -1,0 +1,98 @@
+<div class="p-grid p-align-start vertical-container" style="margin-top: 0.5em !important;">
+    <!--<p-confirmDialog></p-confirmDialog>-->
+    <div class="p-col-12">
+        <p-table #dtOrders  [value]="orders" [lazy]="true" (onLazyLoad)="fetchInfo($event)" [responsive]="true"
+                 [paginator]="true" [rows]="10" [totalRecords]="totalRows"
+                 [(selection)]="orderSelected"
+                 [rowsPerPageOptions]="[5,10,25,50,100]" dataKey="purchaseId"
+        >
+            <ng-template pTemplate="caption">
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <span>My Orders</span>
+                    </div>
+                    <div class="p-col-12">
+                        <div class="ui-inputgroup">
+                            <input placeholder="search" id="txtSearch" type="text" pInputText size="50"  (input)="dtOrders.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 5%"></th>
+                    <th style="width:55%">Date</th>
+                    <th style="width:40%">Amount</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-grupo="rowData"  let-columns="columns" let-rowIndex="rowIndex">
+                <tr>
+                    <td>
+                        <a href="#" [pRowToggler]="rowData">
+                            <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                        </a>
+                    </td>
+                    <td>{{forMatCustomDate(rowData.purchaseDate)}}</td>
+                    <td>
+                        ${{rowData.purchaseAmount}}USD
+                    </td>
+                </tr>
+            </ng-template>
+
+            <!--<ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">-->
+                <!--<tr>-->
+                    <!--<td [attr.colspan]="3">-->
+                        <!--<div class="ui-g" style="font-size:16px;padding:20px">-->
+                            <!--<div class="ui-g-12 ui-md-12">-->
+
+                                <!--<p-dataView #dvPizzas [value]="pizzas" [paginator]="true" [rows]="10"-->
+                                            <!--[lazy]="true" (onLazyLoad)="orderSelected = rowData;fetchPizzas($event)"-->
+                                            <!--[totalRecords]="totalPizzas"-->
+                                            <!--paginatorPosition="both"-->
+                                            <!--layout="grid"-->
+                                <!--&gt;-->
+                                    <!--<p-header>-->
+                                        <!--<div class="ui-helper-clearfix">-->
+                                            <!--<div class="ui-g">-->
+                                                <!--<div class="ui-g-12 ui-md-12 filter-container">-->
+                                                    <!--<div style="position:relative">-->
+                                                        <!--<input type="search" pInputText  (input)="dvPizzas.filterGlobal($event.target.value, 'contains')">-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</p-header>-->
+                                    <!--<ng-template let-p pTemplate="gridItem">-->
+
+                                        <!--<div style="padding:.5em" class="ui-g-12 ui-md-3">-->
+                                            <!--<p-panel  [style]="{'text-align':'center'}">-->
+                                                <!--<p-header>-->
+                                                    <!--<div class="ui-helper-clearfix">-->
+                                                         <!--<span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">-->
+                                                        <!--{{p.nombre}}  {{p.apePaterno}}  {{p.apeMaterno}}-->
+                                                         <!--</span>-->
+                                                        <!--<button [tooltipZIndex]="99999999" appendTo="body"  pButton style="float: right;" type="button" icon="pi pi-times" pTooltip="Desasignar Alumno" (click)="deleteCurso(rowData)" class="ui-button-rounded ui-button-danger btn-sm" tooltipPosition="top"></button>-->
+
+                                                    <!--</div>-->
+
+                                                <!--</p-header>-->
+                                                <!--<img style="background-color: white" src="assets/images/{{p.sexo === 'Femenino' ? 'fe' :''}}male.png" width="60">-->
+                                                <!--<div class="faena-detail">{{p.nombre}}  {{p.apePaterno}}  {{p.apeMaterno}}</div>-->
+                                            <!--</p-panel>-->
+                                        <!--</div>-->
+
+                                    <!--</ng-template>-->
+                                <!--</p-dataView>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                <!--</tr>-->
+            <!--</ng-template>-->
+
+
+            <!--<ng-template pTemplate="summary">-->
+                <!--Mostrando {{grupos?.length}} Registros de {{totalRegistros}}-->
+            <!--</ng-template>-->
+        </p-table>
+    </div>
+</div>

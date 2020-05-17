@@ -11,5 +11,7 @@ export interface PurchaseDetails {
     quantity ?: number;
     purchasePrice  ?: number;
     amount  ?: number;
+    amountEuro  ?: number;
     status  ?: string;
+    sizePizzaId  ?: number;
 }

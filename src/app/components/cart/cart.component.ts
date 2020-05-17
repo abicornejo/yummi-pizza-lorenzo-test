@@ -17,9 +17,11 @@ export class CartComponent implements OnInit{
 
     totalAmount: number = 0;
     ngOnInit() {
-        let purchaseDetails = JSON.parse(localStorage.getItem("purchaseDetails") || "[]");
-        if(!this._app.purchaseDetails.length && purchaseDetails && purchaseDetails.length){
-            this._app.purchaseDetails = purchaseDetails.concat();
+        if(!this._app.purchaseDetails.length){
+            let purchaseDetails = JSON.parse(localStorage.getItem("purchaseDetails") || "[]");
+            if(purchaseDetails && purchaseDetails.length){
+                this._app.purchaseDetails = purchaseDetails.concat();
+            }
         }
 
         this.totalAmount = this._app.purchaseDetails.reduce((tot,item) =>{
@@ -27,11 +29,13 @@ export class CartComponent implements OnInit{
         },0);
     }
     purchase(){
+        let user = JSON.parse(localStorage.getItem("currentUser") || null);
+
         const payment = {
             paymentAmount : this.totalAmount
         }
         const purchase = {
-            clientId : 1,
+            clientId : user.id || null,
             paymentId : null,
             purchaseAmount : this.totalAmount
         }

@@ -1,12 +1,12 @@
 <p-confirmDialog  [baseZIndex]="9999" autoZIndex="true" [style]="{width: '50vw'}"></p-confirmDialog>
 <p-toast [style]="{marginTop: '80px'}"></p-toast>
-<div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
+<div class="ui-g " style="font-size:16px;padding:20px">
     <div class="ui-g-12" style="text-align:center">
         <h1>Select your favorite pizza</h1>
     </div>
     <div class="ui-g-12 ui-md-12">
 
-        <p-dataView #dvPizzas [value]="pizzas" [paginator]="true" [rows]="15"
+        <p-dataView #dvPizzas [value]="pizzas" [paginator]="false" [rows]="15"
                     [lazy]="true" (onLazyLoad)="listPizza($event)"
                     [totalRecords]="rowsCounter"
                     layout="grid"
@@ -65,26 +65,44 @@
            [style]="{  width: '900px',  minWidth: '600px', height: '800px'}"
            [maximizable]="false"
            [baseZIndex]="10000">
-    <div class="p-grid ui-fluid" *ngIf="pizzaSelected">
+    <div class="p-grid" *ngIf="pizzaSelected">
 
-            <div class="p-col-3">
-                <img style="background-color: white"  src="assets/images/pizza/{{pizzaSelected.image}}" width="120">
+        <div class="p-col-3">
+            <img style="background-color: white"  src="assets/images/pizza/{{pizzaSelected.image}}" width="120">
+        </div>
+        <div class="p-col-9">
+            <div class="p-grid">
+                <div class="p-col-12 ui-fluid">
+                    <p-selectButton (onOptionClick)="change($event)" [options]="types" [(ngModel)]="selectedType"></p-selectButton>
+                </div>
+                <div class="p-col-6 ui-fluid">
+                    <h3> <b> Ingredients</b></h3>
+                    <span>{{ingredientByComma}}</span><br>
+                    <label for="">Size</label><br>
+                </div>
+                <div class="p-col-6">
+                    <h3> <b> Quantity</b></h3>
+                    <p-spinner (resize)="20" class="text-center" [min]="1" (onChange)="spinnerChanged($event)" size="30" [(ngModel)]="quantity"></p-spinner>
+                </div>
+                <div class="p-col-6">
+                    <h3> <b> Price USD</b></h3>
+                    <h4 style="color: blue;"> <b>${{sizePizzaSelected.price}}USD</b></h4>
+                </div>
+                <div class="p-col-6">
+                    <h3> <b> Price EUR</b></h3>
+                    <h4 style="color: blue;"> <b>€{{sizePizzaSelected.euroPrice}}EUR</b></h4>
+                </div>
+
+                <div class="p-col-6 text-center">
+                    <h3 class="text-left"> <b>Total USD</b></h3>
+                    <h4 style="color: red;"> <b>${{dynamicPrice}} USD</b></h4>
+                </div>
+                <div class="p-col-6 text-center">
+                    <h3 class="text-left"> <b> Total in Euros</b></h3>
+                    <h4 style="color: red;"> <b>€ {{dynamicPriceEuro}} EUR</b></h4>
+                </div>
             </div>
-            <div class="p-col-3">
-                <span *ngIf="sizePizzaSelected">Size Selected: {{sizePizzaSelected?.name}}</span><br>
-                <span *ngIf="sizePizzaSelected">Price: {{dynamicPrice}}</span><br>
-                <p-spinner [min]="1" (onChange)="spinnerChanged($event)" size="30" [(ngModel)]="quantity"></p-spinner>
-            </div>
-            <div class="p-col-6">
-                <label for="">Ingredients</label><br>
-                <span>{{ingredientByComma}}</span><br>
-                <label for="">Size</label><br>
-                <p-selectButton (onOptionClick)="change($event)" [options]="types" [(ngModel)]="selectedType">
-
-                </p-selectButton>
-
-            </div>
-
+        </div>
     </div>
     <p-footer>
         <button (click)="addToCar($event)" class="" pButton type="button" label="Order"></button>
