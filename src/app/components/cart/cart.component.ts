@@ -28,7 +28,7 @@ export class CartComponent implements OnInit{
            return tot + item.amount;
         },0);
     }
-    purchase(){
+    purchase(event){
         let user = JSON.parse(localStorage.getItem("currentUser") || null);
 
         const payment = {
