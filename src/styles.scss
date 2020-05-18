@@ -63,3 +63,19 @@
 .ui-spinner-input {
   text-align: center;
 }
+
+.topbar #sidebarToggleTop:hover {
+  background-color: #fafafa;
+}
+
+.topbar #sidebarToggleTop {
+  height: 2.5rem;
+  width: 2.5rem;
+  -webkit-box-shadow: 0 0!important;
+  box-shadow: 0 0!important;
+}
+.btn-link:hover {
+  color: #224abe !important;
+  text-decoration: underline !important;
+  background-color: #fafafa !important;
+}

@@ -26,7 +26,8 @@ export class AppComponent implements OnInit {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
-  logout() {
+  logout(event) {
+    event.preventDefault();
     this.authenticationService.logout();
     this.router.navigate(['/login']);
   }

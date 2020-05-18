@@ -19,6 +19,7 @@ export class TopbarComponent {
     }
 
     goToCart(event){
+        event.preventDefault();
         this.router.navigate(['cart']);
     }
 }

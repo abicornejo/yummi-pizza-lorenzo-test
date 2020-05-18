@@ -1,22 +1,94 @@
-<div class="layout-wrapper" [ngClass]="{'layout-sidebar-active': sidebarActive}">
+<!--<div class="layout-wrapper" [ngClass]="{'layout-sidebar-active': sidebarActive}">-->
 
-  <app-menu *ngIf="currentUser"></app-menu>
+  <!--<app-menu *ngIf="currentUser"></app-menu>-->
 
-  <app-topbar *ngIf="currentUser"></app-topbar>
+  <!--<app-topbar *ngIf="currentUser"></app-topbar>-->
 
-  <div class="layout-main">
-    <p-confirmDialog  [baseZIndex]="9999" autoZIndex="true" [style]="{width: '30vw'}"></p-confirmDialog>
-    <p-toast [style]="{marginTop: '80px'}"></p-toast>
-    <div class="layout-content">
-      <alert></alert>
+  <!--<div class="layout-main">-->
+    <!--<p-confirmDialog  [baseZIndex]="9999" autoZIndex="true" [style]="{width: '30vw'}"></p-confirmDialog>-->
+    <!--<p-toast [style]="{marginTop: '80px'}"></p-toast>-->
+    <!--<div class="layout-content">-->
+      <!--<alert></alert>-->
 
-      <app-loading-screen></app-loading-screen>
-      <router-outlet></router-outlet>
+      <!--<app-loading-screen></app-loading-screen>-->
+      <!--<router-outlet></router-outlet>-->
+    <!--</div>-->
+
+    <!--<app-footer *ngIf="currentUser"></app-footer>-->
+
+    <!--<div class="layout-main-mask"></div>-->
+  <!--</div>-->
+
+<!--</div>-->
+<app-loading-screen></app-loading-screen>
+<alert></alert>
+<p-confirmDialog  [baseZIndex]="9999" autoZIndex="true" [style]="{width: '30vw'}"></p-confirmDialog>
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
+<div id="wrapper">
+  <!-- Sidebar -->
+  <ul [ngClass]="{'toggled': sidebarActive}" *ngIf="currentUser" class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <div class="sidebar-brand-icon">
+        <!--<img src="/assets/img/logo/logo2.png">-->
+      </div>
+      <div class="sidebar-brand-text mx-3">Yummi Pizza</div>
+    </a>
+    <hr class="sidebar-divider my-0">
+    <!--<li class="nav-item active">-->
+      <!--<a class="nav-link" href="index.html">-->
+        <!--<i class="fas fa-fw fa-tachometer-alt"></i>-->
+        <!--<span>Dashboard</span></a>-->
+    <!--</li>-->
+    <!--<hr class="sidebar-divider">-->
+    <!--<app-menu *ngIf="currentUser"></app-menu>-->
+    <div class="sidebar-heading">
+      Features
     </div>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/home" routerLinkActive="active">
+        <i class="pi pi-pw pi-home"></i>
+        <span>Home</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/cart" routerLinkActive="active">
+        <i class="pi pi-shopping-cart"></i>
+        <span>Shopping cart</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/order" routerLinkActive="active">
+        <i class="pi pi-chart-bar"></i>
+        <span>My Orders</span>
+      </a>
+    </li>
+    <!--<hr class="sidebar-divider">-->
+    <!--<div class="version" id="version-ruangadmin"></div>-->
+  </ul>
+  <!-- Sidebar -->
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+      <!-- TopBar -->
+      <app-topbar *ngIf="currentUser"></app-topbar>
+     <!-- Topbar -->
 
-    <app-footer *ngIf="currentUser"></app-footer>
+      <!-- Container Fluid-->
+      <div class="container-fluid" id="container-wrapper">
+        <router-outlet></router-outlet>
 
-    <div class="layout-main-mask"></div>
+      </div>
+      <!---Container Fluid-->
+    </div>
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white">
+      <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
+              <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
+            </span>
+        </div>
+      </div>
+    </footer>
+    <!-- Footer -->
   </div>
-
 </div>
