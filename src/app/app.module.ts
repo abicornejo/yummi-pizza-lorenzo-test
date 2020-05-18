@@ -5,10 +5,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
-
-// used to create fake backend
-import { fakeBackendProvider } from './components/_helpers';
-import { JwtInterceptor, ErrorInterceptor } from './components/_helpers';
+import { JwtInterceptor } from './components/_helpers';
 
 
 import {DialogModule} from 'primeng/dialog';
@@ -54,11 +51,17 @@ import { CartComponent } from './components/cart/cart.component';
 import { RegisterComponent } from './components/register';
 import { AlertComponent } from './components/_components';
 import { OrdersComponent } from './components/orders/orders.component';
+import {LoadingScreenInterceptor} from './components/_helpers/loading.interceptor';
+
+import {LoadingScreenComponent} from './components/loading-screen/loading-screen.component';
+import {LoadingScreenService} from './services/loading-screen.service';
+//import {AlertComponent} from './components/_components/alert.component';
 
 @NgModule({
   declarations: [
     AppComponent, LoginComponent, MenuComponent, TopbarComponent, FooterComponent,
-    HomeComponent, CartComponent, RegisterComponent, AlertComponent, OrdersComponent
+    HomeComponent, CartComponent, RegisterComponent, AlertComponent, OrdersComponent,
+    LoadingScreenComponent
 
   ],
   imports: [
@@ -69,12 +72,13 @@ import { OrdersComponent } from './components/orders/orders.component';
     PanelModule, SelectButtonModule, SpinnerModule, FullCalendarModule, ChartModule, EditorModule,
     PasswordModule, ToolbarModule
   ],
-  providers: [AuthService, GlobalServices, ConfirmationService, MessageService,
+  providers: [AuthService, GlobalServices, ConfirmationService, MessageService, LoadingScreenService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
-    // provider used to create fake backend
-    fakeBackendProvider
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingScreenInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

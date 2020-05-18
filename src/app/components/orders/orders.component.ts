@@ -3,7 +3,7 @@ import { AppComponent } from './../../app.component';
 import {Router} from '@angular/router';
 
 import {Purchase} from './../../models/Purchase';
-import {Pizza} from './../../models/Pizza';
+import {PurchaseDetails} from './../../models/PurchaseDetails';
 import {LazyLoadEvent} from 'primeng';
 import {GlobalServices} from '../../services/global.service';
 
@@ -24,9 +24,12 @@ export class OrdersComponent implements OnInit{
     }
     expanded : false;
     orders : Purchase[]=[];
+    pizzas : PurchaseDetails[]=[];
     dataSource : Purchase[];
+    dataSourcePizza : PurchaseDetails[];
     orderSelected : Purchase = {};
     totalRows: 0;
+    totalRowsPizza = 0;
     montOfYear = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Agu', 'Sep', 'Oct', 'Nov', 'Dic'];
 
 
@@ -50,6 +53,31 @@ export class OrdersComponent implements OnInit{
             this.totalRows = records.data.length;
 
             this.orders = this.dataSource;
+
+        }).catch((error: any) => {
+
+        });
+    }
+
+    fetchPizzas(event: LazyLoadEvent){
+
+        let parameters = {
+            method: 'GET',
+            urlMethod: `getDetailByOrderId/${this.orderSelected.purchaseId}`,
+            callBack: null,
+            params: {
+                skip: event.first,
+                take: event.rows,
+                search: event.globalFilter
+            }
+        };
+        this._service.callApiRest(parameters).then(records => {
+            // @ts-ignore
+            this.dataSourcePizza = records.data;
+            // @ts-ignore
+            this.totalRowsPizza = records.data.length;
+
+            this.pizzas = this.dataSourcePizza;
 
         }).catch((error: any) => {
 

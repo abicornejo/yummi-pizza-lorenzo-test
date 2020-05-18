@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import {PurchaseDetails} from './models/PurchaseDetails';
 //import {AuthenticationService} from './components/login/shared/authentication.service';
-import {AuthenticationService} from './services/authentication.service';
+import {AuthService} from './auth.service';
 import { User } from './models/User';
 import {Router} from '@angular/router';
 import './components/_content/app.less';
@@ -10,7 +10,7 @@ import './components/_content/app.less';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [ AuthenticationService ]
+  //providers: [ AuthenticationService ]
 })
 export class AppComponent implements OnInit {
   currentUser: User;
@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
 
   constructor(
       private router: Router,
-      private authenticationService: AuthenticationService
+      private authenticationService: AuthService
   ) {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }

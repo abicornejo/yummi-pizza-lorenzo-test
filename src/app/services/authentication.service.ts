@@ -25,7 +25,7 @@ export class AuthenticationService implements OnInit {
         return this.currentUserSubject.value;
     }
 
-    login(email, password) {debugger;
+    login(email, password) {
         // @ts-ignore
         return this.http.post<any>(`${this.urlService}/login`, { email, password })
             .pipe(map(user => {

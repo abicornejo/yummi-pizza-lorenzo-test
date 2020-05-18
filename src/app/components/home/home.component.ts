@@ -6,13 +6,16 @@ import {GlobalServices} from './../../services/global.service';
 import {ConfirmationService, LazyLoadEvent, MessageService, SelectItem} from 'primeng/api';
 import { AppComponent } from './../../app.component';
 import {Router} from '@angular/router';
+import {AuthService} from './../../auth.service';
+import {User} from '../../models';
+import {BehaviorSubject} from 'rxjs';
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
     providers: [ConfirmationService, MessageService]
 })
 export class HomeComponent implements OnInit{
-    pizzas: Pizza[];
+    pizzas: Pizza[]=[];
     sizePizza: SizePizza[];
     sizePizzaSelected: SizePizza;
     pizzaSelected: Pizza;
@@ -27,17 +30,31 @@ export class HomeComponent implements OnInit{
     rowsCounter: 0;
     ingredientByComma: string;
     displayOrderDialog = false;
+    currentUser: User;
     constructor(private  _service: GlobalServices, public _app: AppComponent,
                 private _confirmService: ConfirmationService,
                 private _mesgService: MessageService,
                 private _router: Router,
-                private cd: ChangeDetectorRef) {
+                private cd: ChangeDetectorRef,
+                private authenticationService: AuthService
+                ) {
+
+        this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     }
     ngOnInit(){
+
+
         if(!this._app.purchaseDetails.length){
             let purchaseDetails = JSON.parse(localStorage.getItem("purchaseDetails") || "[]");
             if(purchaseDetails && purchaseDetails.length){
                 this._app.purchaseDetails = purchaseDetails.concat();;
+            }
+        }
+
+        if(!this.pizzas.length){
+            let pizzasFromLocal = JSON.parse(localStorage.getItem("pizzas") || "[]");
+            if(pizzasFromLocal && pizzasFromLocal.length){
+                this.pizzas = pizzasFromLocal.concat();;
             }
         }
 
@@ -58,17 +75,27 @@ export class HomeComponent implements OnInit{
     }
 
     getPizza(parameters) {
-        this._service.callApiRest(parameters).then(records => {
-            // @ts-ignore
-            this.dataSource = records.data;
-            // @ts-ignore
-            this.rowsCounter = records.total;
+        const pizzasFromLocal = JSON.parse(localStorage.getItem("pizzas") || "[]");
 
+        if(pizzasFromLocal && pizzasFromLocal.length){
+            this.dataSource = pizzasFromLocal;
+            // @ts-ignore
+            this.rowsCounter = pizzasFromLocal.length;
             this.pizzas = this.dataSource;
+        }else{
+            this._service.callApiRest(parameters).then(records => {
+                // @ts-ignore
+                this.dataSource = records.data;
+                // @ts-ignore
+                this.rowsCounter = records.total;
+                localStorage.setItem("pizzas", JSON.stringify(this.dataSource));
+                this.pizzas = this.dataSource;
 
-        }).catch((error: any) => {
+            }).catch((error: any) => {
 
-        });
+            });
+        }
+
     }
     change(event){
         this.sizePizzaSelected = this.sizePizza.find( item => item.sizePizzaId === event.option.value) ;
@@ -108,41 +135,42 @@ export class HomeComponent implements OnInit{
             this.selectedType = this.types[0].value;
             this.dynamicPrice = (this.sizePizzaSelected.price) * (this.quantity);
             this.dynamicPriceEuro = (this.sizePizzaSelected.euroPrice) * (this.quantity);
-           this.getIngredientsByPizza(pizza);
+            this.displayOrderDialog = true;
+            //this.getIngredientsByPizza(pizza);
         }).catch((error: any) => {
 
         });
 
     }
 
-    getIngredientsByPizza(pizza: Pizza){
-        const parameters = {
-            method: 'GET',
-            urlMethod: `getIngredientsByPizzaId/${pizza.pizzaId}`,
-            callBack: null,
-            params: { }
-        };
-        this._service.callApiRest(parameters).then(records => {
-            // @ts-ignore
-            if(records && records.data){
-                // @ts-ignore
-                this.ingredients = records.data;
-                // @ts-ignore
-                let tmp = records.data.map(record =>{
-                    return record.label;
-                });
-                this.ingredientByComma =tmp.join(',');
-                this.displayOrderDialog = true;
-            }
-
-        }).catch((error: any) => {
-
-        });
-    }
+    // getIngredientsByPizza(pizza: Pizza){
+    //     const parameters = {
+    //         method: 'GET',
+    //         urlMethod: `getIngredientsByPizzaId/${pizza.pizzaId}`,
+    //         callBack: null,
+    //         params: { }
+    //     };
+    //     this._service.callApiRest(parameters).then(records => {
+    //         // @ts-ignore
+    //         if(records && records.data){
+    //             // @ts-ignore
+    //             this.ingredients = records.data;
+    //             // @ts-ignore
+    //             let tmp = records.data.map(record =>{
+    //                 return record.label;
+    //             });
+    //             this.ingredientByComma =tmp.join(',');
+    //             this.displayOrderDialog = true;
+    //         }
+    //
+    //     }).catch((error: any) => {
+    //
+    //     });
+    // }
 
     addToCar(event){
         this.purchaseDetails.pizzaId = this.pizzaSelected.pizzaId;
-        this.purchaseDetails.ingredients = this.ingredientByComma;
+        this.purchaseDetails.ingredients = this.pizzaSelected.ingredients;
         this.purchaseDetails.pizza = this.pizzaSelected.name;
         this.purchaseDetails.purchasePrice = this.sizePizzaSelected.price;
         this.purchaseDetails.amount = this.dynamicPrice;

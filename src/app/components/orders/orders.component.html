@@ -21,8 +21,10 @@
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 5%"></th>
-                    <th style="width:55%">Date</th>
-                    <th style="width:40%">Amount</th>
+                    <th style="width:25%">Date</th>
+                    <th style="width:20%">SubTotal</th>
+                    <th style="width:25%">Cost Delivery</th>
+                    <th style="width:25%">Total</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-grupo="rowData"  let-columns="columns" let-rowIndex="rowIndex">
@@ -34,60 +36,62 @@
                     </td>
                     <td>{{forMatCustomDate(rowData.purchaseDate)}}</td>
                     <td>
+                        ${{rowData.subtotal}} USD
+                    </td>
+                    <td>
+                        ${{rowData.costDelivery}} USD
+                    </td>
+                    <td>
                         ${{rowData.purchaseAmount}} USD
                     </td>
                 </tr>
             </ng-template>
 
-            <!--<ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">-->
-                <!--<tr>-->
-                    <!--<td [attr.colspan]="3">-->
-                        <!--<div class="ui-g" style="font-size:16px;padding:20px">-->
-                            <!--<div class="ui-g-12 ui-md-12">-->
+            <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+                <tr>
+                    <td [attr.colspan]="5">
+                        <div class="ui-g" style="font-size:16px;padding:20px">
+                            <div class="ui-g-12 ui-md-12">
 
-                                <!--<p-dataView #dvPizzas [value]="pizzas" [paginator]="true" [rows]="10"-->
-                                            <!--[lazy]="true" (onLazyLoad)="orderSelected = rowData;fetchPizzas($event)"-->
-                                            <!--[totalRecords]="totalPizzas"-->
-                                            <!--paginatorPosition="both"-->
-                                            <!--layout="grid"-->
-                                <!--&gt;-->
-                                    <!--<p-header>-->
-                                        <!--<div class="ui-helper-clearfix">-->
-                                            <!--<div class="ui-g">-->
-                                                <!--<div class="ui-g-12 ui-md-12 filter-container">-->
-                                                    <!--<div style="position:relative">-->
-                                                        <!--<input type="search" pInputText  (input)="dvPizzas.filterGlobal($event.target.value, 'contains')">-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</p-header>-->
-                                    <!--<ng-template let-p pTemplate="gridItem">-->
+                                <p-dataView #dvPizzas [value]="pizzas" [paginator]="false" [rows]="10"
+                                            [lazy]="true" (onLazyLoad)="orderSelected = rowData;fetchPizzas($event)"
+                                            [totalRecords]="totalRowsPizza"
+                                            layout="grid"
+                                >
+                                    <p-header>
+                                        <div class="ui-helper-clearfix">
+                                            <div class="ui-g">
+                                                <div class="ui-g-12 ui-md-12">
+                                                    <div style="position:relative">
+<h3>Details</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p-header>
+                                    <ng-template let-p pTemplate="gridItem">
 
-                                        <!--<div style="padding:.5em" class="ui-g-12 ui-md-3">-->
-                                            <!--<p-panel  [style]="{'text-align':'center'}">-->
-                                                <!--<p-header>-->
-                                                    <!--<div class="ui-helper-clearfix">-->
-                                                         <!--<span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">-->
-                                                        <!--{{p.nombre}}  {{p.apePaterno}}  {{p.apeMaterno}}-->
-                                                         <!--</span>-->
-                                                        <!--<button [tooltipZIndex]="99999999" appendTo="body"  pButton style="float: right;" type="button" icon="pi pi-times" pTooltip="Desasignar Alumno" (click)="deleteCurso(rowData)" class="ui-button-rounded ui-button-danger btn-sm" tooltipPosition="top"></button>-->
+                                        <div style="padding:.5em" class="ui-g-12 ui-md-3">
+                                            <p-panel  [style]="{'text-align':'center'}">
+                                                <p-header>
+                                                    <div class="ui-helper-clearfix">
+                                                         <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">
+                                                        {{p.pizza}}
+                                                         </span>
+                                                    </div>
+                                                </p-header>
+                                                <img style="background-color: white" src="assets/images/pizza/{{p.image}}" width="60">
+                                                <div class="faena-detail">{{p.ingredients}}</div>
+                                            </p-panel>
+                                        </div>
 
-                                                    <!--</div>-->
-
-                                                <!--</p-header>-->
-                                                <!--<img style="background-color: white" src="assets/images/{{p.sexo === 'Femenino' ? 'fe' :''}}male.png" width="60">-->
-                                                <!--<div class="faena-detail">{{p.nombre}}  {{p.apePaterno}}  {{p.apeMaterno}}</div>-->
-                                            <!--</p-panel>-->
-                                        <!--</div>-->
-
-                                    <!--</ng-template>-->
-                                <!--</p-dataView>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</td>-->
-                <!--</tr>-->
-            <!--</ng-template>-->
+                                    </ng-template>
+                                </p-dataView>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
 
 
             <!--<ng-template pTemplate="summary">-->

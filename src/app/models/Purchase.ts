@@ -3,6 +3,8 @@ export interface Purchase {
     clientId ?: number;
     paymentId ?: number;
     purchaseAmount ?: number;
+    subtotal ?: number;
+    costDelivery ?: number;
     purchaseDate ?: Date;
     status ?: string;
 }

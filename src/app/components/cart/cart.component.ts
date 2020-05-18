@@ -14,30 +14,41 @@ export class CartComponent implements OnInit{
                 private _router: Router) {
 
     }
-
+    subTotalAmount: number = 0;
     totalAmount: number = 0;
+    costToDelivery: number = 30;
     ngOnInit() {
+        //this.costToDelivery = 30;
         if(!this._app.purchaseDetails.length){
             let purchaseDetails = JSON.parse(localStorage.getItem("purchaseDetails") || "[]");
             if(purchaseDetails && purchaseDetails.length){
                 this._app.purchaseDetails = purchaseDetails.concat();
             }
         }
+        if(this._app.purchaseDetails && this._app.purchaseDetails.length){
+            this.subTotalAmount = this._app.purchaseDetails.reduce((tot,item) =>{
+                return tot + item.amount;
+            },0);
 
-        this.totalAmount = this._app.purchaseDetails.reduce((tot,item) =>{
-           return tot + item.amount;
-        },0);
+            this.totalAmount = this.subTotalAmount + this.costToDelivery;
+        }
+
     }
     purchase(event){
         let user = JSON.parse(localStorage.getItem("currentUser") || null);
 
         const payment = {
-            paymentAmount : this.totalAmount
+            paymentAmount : this.totalAmount,
+            subtotal: this.subTotalAmount,
+            costDelivery : this.costToDelivery
+
         }
         const purchase = {
             clientId : user.id || null,
             paymentId : null,
-            purchaseAmount : this.totalAmount
+            purchaseAmount : this.totalAmount,
+            subtotal: this.subTotalAmount,
+            costDelivery : this.costToDelivery
         }
         const parameters = {
             method: 'POST',
@@ -53,7 +64,7 @@ export class CartComponent implements OnInit{
             // @ts-ignore
             if(records && records.success){
                 // @ts-ignore
-                let options = {severity: 'success', sticky: true, summary: 'Exito', detail:records.msg};
+                let options = {severity: 'success', sticky: false, summary: 'Order successfully', detail:records.msg};
                 // @ts-ignore
                 if(records.success === 'ERROR'){
                     options.severity = 'error';
@@ -61,7 +72,7 @@ export class CartComponent implements OnInit{
                 }else{
                     localStorage.setItem("purchaseDetails", '[]');
                     this._app.purchaseDetails = [];
-                    this._router.navigate(['home']);
+                    this._router.navigate(['order']);
                 }
                 this._mesgService.add(options);
             }

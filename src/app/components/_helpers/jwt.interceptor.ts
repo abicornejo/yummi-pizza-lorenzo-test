@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
 
-import { AuthenticationService } from './../../services';
+import { AuthService } from './../../auth.service';
+import {catchError} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-    constructor(private authenticationService: AuthenticationService) {}
+    constructor(private authenticationService: AuthService,  private router: Router,) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -24,5 +26,18 @@ export class JwtInterceptor implements HttpInterceptor {
         }
 
         return next.handle(request);
+
+        // return next.handle(request).pipe(
+        //     catchError((err: HttpErrorResponse) => {
+        //
+        //         if (err.status === 401) {
+        //             this.router.navigateByUrl('/login');
+        //         }
+        //
+        //         return throwError( err );
+        //
+        //     })
+        // );
+
     }
 }

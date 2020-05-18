@@ -1,14 +1,46 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import { map,  catchError, tap } from 'rxjs/operators';
+import { Injectable , OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import {BehaviorSubject, config, Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 
-@Injectable()
+import { User } from './models';
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-    public urlService = 'http://pizzaservice.itcodesolutions.com/api/auth';
-    constructor(private httpClient: HttpClient) {
+    //public urlService = 'http://pizzaservice.itcodesolutions.com/api/auth';
+    public urlService = 'http://127.0.0.1:8000/api/auth';
+    private currentUserSubject: BehaviorSubject<User>;
+    public currentUser: Observable<User>;
 
+
+    constructor(private http: HttpClient) {
+        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+        this.currentUser = this.currentUserSubject.asObservable();
     }
+    public get currentUserValue(): User {
+        return this.currentUserSubject.value;
+    }
+
+    login(email, password) {
+        // @ts-ignore
+        return this.http.post<any>(`${this.urlService}/login`, { email, password })
+            .pipe(map(user => {
+                // store user details and jwt token in local storage to keep user logged in between page refreshes
+                if(user.success){
+                    localStorage.setItem('currentUser', JSON.stringify(user.user));
+                    this.currentUserSubject.next(user.user);
+                    return user.user;
+                }
+                return false;
+
+            }));
+    }
+
+    logout() {
+        // remove user from local storage and set current user to null
+        localStorage.removeItem('currentUser');
+        this.currentUserSubject.next(null);
+    }
+
 
     // signup(username: string, email: string, password: string){
     //     const header = {
