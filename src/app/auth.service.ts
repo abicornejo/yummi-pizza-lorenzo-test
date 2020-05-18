@@ -6,8 +6,8 @@ import { map } from 'rxjs/operators';
 import { User } from './models';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    //public urlService = 'http://pizzaservice.itcodesolutions.com/api/auth';
-    public urlService = 'http://127.0.0.1:8000/api/auth';
+    public urlService = 'http://pizzaservice.itcodesolutions.com/api/auth';
+    //public urlService = 'http://127.0.0.1:8000/api/auth';
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
 
